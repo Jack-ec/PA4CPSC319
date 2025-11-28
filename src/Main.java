@@ -90,7 +90,10 @@ class Graph {
     //    the final order in the list will be: B (3) → D (5) → C (7)
     //
     public void addEdge(String source, String destination, int weight) {
-        TODO #1: ** YOUR CODE HERE **
+        if (!containsNode(source)) {
+            adjacencyList.put(source, new SinglyLinkedList());
+        }
+        adjacencyList.get(source).addSorted(destination, weight);
     }
 
 
