@@ -147,14 +147,14 @@ class Graph {
         //      Set the distance from the start node to itself as 0.
         //      (All other nodes have already been initialized to infinity.)
         //
-        TODO #2: ** YOUR CODE HERE **
-
+        //TODO #2: ** YOUR CODE HERE **
+        distances.put(start, 0);
                 // Add the starting node to the priority queue.
                 // We begin Dijkstra’s algorithm by visiting the start node, with a known distance of 0.
 
                 // Create a key-value pair (entry) that represents the starting node and its distance.
                 // The key is the node name (e.g., "A" or "1"), and the value is the distance (0).
-                Map.Entry<String, Integer> startEntry = new AbstractMap.SimpleEntry<>(start, 0);
+        Map.Entry<String, Integer> startEntry = new AbstractMap.SimpleEntry<>(start, 0);
 
         // Add this entry to the priority queue.
         // This tells the algorithm to start processing from this node first.
@@ -174,14 +174,15 @@ class Graph {
         // YOUR RESPONSIBILITY: Start the loop and extract the most promising node —
         //                          a key conceptual and practical moment in understanding Dijkstra’s algorithm.
         //
-        while ( TODO #3: ** YOUR CODE HERE ** ) {
+        while (!pq.isEmpty()) {
 
             // Remove (poll) the node with the smallest distance from the priority queue.
             // This gives us the next "most promising" node to explore.
-            TODO #3: ** YOUR CODE HERE **
-
-                    // Extract the node name (e.g., "A", "B", etc.) from the current entry.
-                    TODO #3: ** YOUR CODE HERE **
+            //TODO #3: ** YOUR CODE HERE **
+            Map.Entry<String, Integer> current = pq.poll();
+            // Extract the node name (e.g., "A", "B", etc.) from the current entry.
+            //TODO #3: ** YOUR CODE HERE **
+            String currentKey = current.getKey();
 
             // Extract the current known distance from the start node to this node.
             int currentDistance = current.getValue();
