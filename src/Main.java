@@ -201,7 +201,7 @@ class Graph {
             }
                     // Get the list of neighbors (edges) for the current node.
                     // If the current node has no outgoing edges, we get an empty list instead.
-            List<Edge> neighbors = adjacencyList.getOrDefault(currentNode, new SinglyLinkedList()).toList();
+            List<Edge> neighbors = adjacencyList.getOrDefault(currentKey, new SinglyLinkedList()).toList();
 
             // Loop through each edge in the neighbor list using a basic for-loop with index.
             for (int i = 0; i < neighbors.size(); i++) {
@@ -217,7 +217,7 @@ class Graph {
                 //
                 // PSEUDOCODE: newDist = current node’s distance + edge weight to this neighbor
                 //
-                TODO #5: ** YOUR CODE HERE **
+                int newDist = currentDistance + edge.weight;
 
                 // Get the current known shortest distance to the destination node.
                 // If the destination node is not yet in the distances map, use Integer.MAX_VALUE as the default (infinity).
@@ -232,7 +232,7 @@ class Graph {
                 //      If the new distance is less than the current known distance:
                 //          Update the shortest path to this neighbor.
 
-                if ( TODO #6: ** YOUR CODE HERE ** ) {
+                if (newDist < currentDistance) {
 
                     // TODO #7: Update the shortest known distance to this neighbor.
                     //
@@ -240,7 +240,7 @@ class Graph {
                     //
                     // PSEUDOCODE: Save newDist as the best known distance to this neighbor.
 
-                    TODO #7: ** YOUR CODE HERE **
+                    distances.put(edge.destination, newDist);
 
                             // TODO #8: Add this entry to the priority queue.
                             // The queue will later give us this neighbor to process based on the shortest distance.
