@@ -188,18 +188,20 @@ class Graph {
             int currentDistance = current.getValue();
 
             // TODO #4: Skip this node if we’ve already found a shorter path to it before.
-            // This avoids re-processing nodes with outdated (longer) distances.
-            // ** Critical: skip outdated paths — real Dijkstra logic. **
-            //
-            // PSEUDOCODE:
-            //      If the distance we are currently processing is greater than the best known distance:
-            //          Skip this node (we’ve already found a better way to reach it).
-            //
-            TODO #4: ** YOUR CODE HERE **
-
+            if (currentDistance == distances.get(currentKey)) {
+                // This avoids re-processing nodes with outdated (longer) distances.
+                // ** Critical: skip outdated paths — real Dijkstra logic. **
+                //
+                // PSEUDOCODE:
+                //      If the distance we are currently processing is greater than the best known distance:
+                //          Skip this node (we’ve already found a better way to reach it).
+                //
+                //TODO #4: ** YOUR CODE HERE **
+                continue;
+            }
                     // Get the list of neighbors (edges) for the current node.
                     // If the current node has no outgoing edges, we get an empty list instead.
-                    List<Edge> neighbors = adjacencyList.getOrDefault(currentNode, new SinglyLinkedList()).toList();
+            List<Edge> neighbors = adjacencyList.getOrDefault(currentNode, new SinglyLinkedList()).toList();
 
             // Loop through each edge in the neighbor list using a basic for-loop with index.
             for (int i = 0; i < neighbors.size(); i++) {
