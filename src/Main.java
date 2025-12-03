@@ -252,7 +252,9 @@ class Graph {
                             //      Add it to the priority queue.
                             //
 
-                            TODO #8: ** YOUR CODE HERE **
+                            //TODO #8: ** YOUR CODE HERE **
+                    Map.Entry<String, Integer> neighbor = new AbstractMap.SimpleEntry<>(edge.destination, newDist);
+                    pq.add(neighbor);
 
                 }
             }
