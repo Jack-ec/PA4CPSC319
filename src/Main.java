@@ -68,30 +68,13 @@ class Graph {
     }
 
     // TODO #1: Add a directed edge from 'source' to 'destination' with the given weight.
-    //
-    // ** Core to building the graph (adjacency list logic). Students should write this. **
-    //
-    // HINT: This method updates the adjacency list — a HashMap where:
-    //       - Each key is a source node (e.g., "A", "B")
-    //       - Each value is a linked list of neighbors (destinations with weights)
-    //
-    //       Use the get-or-create pattern: if the source node isn't already in the map,
-    //       create a new SinglyLinkedList for it first, then add the destination node to it.
-    //
-    // PSEUDOCODE:
-    //      If the source node is not already in the adjacency list:
-    //           Create an empty linked list for the source node.
-    //      Insert the destination node (and weight) into the source node’s list,
-    //      making sure the list remains sorted by weight.
-    //
-    // Example:
-    //    If "A" already has edges to "B" (weight 3) and "C" (weight 7),
-    //    and you now add ("A", "D", 5),
-    //    the final order in the list will be: B (3) → D (5) → C (7)
-    //
+
     public void addEdge(String source, String destination, int weight) {
         if (!containsNode(source)) {
             adjacencyList.put(source, new SinglyLinkedList());
+        }
+        if(!containsNode(destination)) {
+            adjacencyList.put(destination, new SinglyLinkedList());
         }
         adjacencyList.get(source).addSorted(destination, weight);
     }
@@ -138,65 +121,28 @@ class Graph {
             distances.put(node, Integer.MAX_VALUE);
         }
 
-        // TODO #2: Set the starting node's distance to 0, because the shortest path from the start to itself is zero.
-        // All other nodes will initially be set to "infinity" (Integer.MAX_VALUE), but the start is known.
-        //
-        // ** Conceptually important: distance from start node to itself is 0. **
-        //
-        // PSEUDOCODE:
-        //      Set the distance from the start node to itself as 0.
-        //      (All other nodes have already been initialized to infinity.)
-        //
-        //TODO #2: ** YOUR CODE HERE **
-        distances.put(start, 0);
-                // Add the starting node to the priority queue.
-                // We begin Dijkstra’s algorithm by visiting the start node, with a known distance of 0.
 
-                // Create a key-value pair (entry) that represents the starting node and its distance.
-                // The key is the node name (e.g., "A" or "1"), and the value is the distance (0).
+        distances.put(start, 0);
+
         Map.Entry<String, Integer> startEntry = new AbstractMap.SimpleEntry<>(start, 0);
 
         // Add this entry to the priority queue.
         // This tells the algorithm to start processing from this node first.
         pq.add(startEntry);
 
-
-        // TODO #3: Keep processing nodes from the priority queue until it's empty.
-        // The queue always gives us the next node with the smallest known distance.
-        //
-        // ** Main priority queue loop logic — students must understand how Dijkstra works. **
-        //
-        // PSEUDOCODE:
-        //      While the priority queue is not empty:
-        //          Remove the node with the smallest known distance.
-        //          Process its neighbors to try to find shorter paths.
-        //
-        // YOUR RESPONSIBILITY: Start the loop and extract the most promising node —
-        //                          a key conceptual and practical moment in understanding Dijkstra’s algorithm.
-        //
         while (!pq.isEmpty()) {
 
             // Remove (poll) the node with the smallest distance from the priority queue.
             // This gives us the next "most promising" node to explore.
-            //TODO #3: ** YOUR CODE HERE **
             Map.Entry<String, Integer> current = pq.poll();
             // Extract the node name (e.g., "A", "B", etc.) from the current entry.
-            //TODO #3: ** YOUR CODE HERE **
             String currentKey = current.getKey();
 
             // Extract the current known distance from the start node to this node.
             int currentDistance = current.getValue();
 
-            // TODO #4: Skip this node if we’ve already found a shorter path to it before.
-            if (currentDistance == distances.get(currentKey)) {
-                // This avoids re-processing nodes with outdated (longer) distances.
-                // ** Critical: skip outdated paths — real Dijkstra logic. **
-                //
-                // PSEUDOCODE:
-                //      If the distance we are currently processing is greater than the best known distance:
-                //          Skip this node (we’ve already found a better way to reach it).
-                //
-                //TODO #4: ** YOUR CODE HERE **
+            if (currentDistance > distances.get(currentKey)) {
+
                 continue;
             }
                     // Get the list of neighbors (edges) for the current node.
@@ -206,56 +152,16 @@ class Graph {
             // Loop through each edge in the neighbor list using a basic for-loop with index.
             for (int i = 0; i < neighbors.size(); i++) {
 
-                // Get the edge at index i from the list of neighbors.
-                // This edge represents a connection from the current node to a neighbor.
-                // Each edge object contains the neighbor's name (edge.destination) and the cost to reach it (edge.weight).
                 Edge edge = neighbors.get(i);
 
-                // TODO #5: Calculate the total distance from the start to this neighbor node
-                // through the current node.
-                // ** Teaches distance update + priority queue reinsertion — fundamental Dijkstra step. **
-                //
-                // PSEUDOCODE: newDist = current node’s distance + edge weight to this neighbor
-                //
                 int newDist = currentDistance + edge.weight;
 
-                // Get the current known shortest distance to the destination node.
-                // If the destination node is not yet in the distances map, use Integer.MAX_VALUE as the default (infinity).
                 int knownDistance = distances.getOrDefault(edge.destination, Integer.MAX_VALUE);
 
-                // TODO #6 & #7: Compare the new distance (through the current node) with the known distance.
-                // If the new path is shorter, we will update it in the map.
-                //
-                // ** Teaches distance update + priority queue reinsertion — fundamental Dijkstra step. **
-                //
-                // PSEUDOCODE:
-                //      If the new distance is less than the current known distance:
-                //          Update the shortest path to this neighbor.
-
-                if (newDist < currentDistance) {
-
-                    // TODO #7: Update the shortest known distance to this neighbor.
-                    //
-                    // ** Teaches distance update + priority queue reinsertion — fundamental Dijkstra step. **
-                    //
-                    // PSEUDOCODE: Save newDist as the best known distance to this neighbor.
-
+                if (newDist < knownDistance) {
                     distances.put(edge.destination, newDist);
-
-                            // TODO #8: Add this entry to the priority queue.
-                            // The queue will later give us this neighbor to process based on the shortest distance.
-                            //
-                            // ** Teaches distance update + priority queue reinsertion — fundamental Dijkstra step. **
-                            //
-                            // PSEUDOCODE:
-                            //      Create a (node, distance) pair for the neighbor.
-                            //      Add it to the priority queue.
-                            //
-
-                            //TODO #8: ** YOUR CODE HERE **
                     Map.Entry<String, Integer> neighbor = new AbstractMap.SimpleEntry<>(edge.destination, newDist);
                     pq.add(neighbor);
-
                 }
             }
         }
