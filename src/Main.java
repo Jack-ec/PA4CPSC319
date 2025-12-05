@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 //Jack Chidlaw
 //UCID:30187692
+//Tutorial:T05
 //PA4 CPSC319
 //AI disclosure: AI was used to help gain a better understanding of a bug that was coming up when there was a node that appears as a destination but never a source in a graph file.
 //all code was written by hand.
@@ -147,18 +148,18 @@ class Graph {
             Map.Entry<String, Integer> current = pq.poll();
 
             // Extract the node name (e.g., "A", "B", etc.) from the current entry.
-            String currentKey = current.getKey();
+            String currentNode = current.getKey();
 
             // Extract the current known distance from the start node to this node.
             int currentDistance = current.getValue();
 
-            if (currentDistance > distances.get(currentKey)) {
+            if (currentDistance > distances.get(currentNode)) {
                 //Jack Chidlaw: Skip the node if we already found a shorter distance.
                 continue;
             }
             // Get the list of neighbors (edges) for the current node.
             // If the current node has no outgoing edges, we get an empty list instead.
-            List<Edge> neighbors = adjacencyList.getOrDefault(currentKey, new SinglyLinkedList()).toList();
+            List<Edge> neighbors = adjacencyList.getOrDefault(currentNode, new SinglyLinkedList()).toList();
 
             // Loop through each edge in the neighbor list using a basic for-loop with index.
             for (int i = 0; i < neighbors.size(); i++) {
