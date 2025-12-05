@@ -1,5 +1,10 @@
 import java.io.*;
 import java.util.*;
+//Jack Chidlaw
+//UCID:30187692
+//PA4 CPSC319
+//AI disclosure: AI was used to help gain a better understanding of a bug that was coming up when there was a node that appears as a destination but never a source in a graph file.
+//all code was written by hand.
 
 // Node class representing an element in a singly linked list.
 class Node {
@@ -66,16 +71,19 @@ class Graph {
     public Graph() {
         adjacencyList = new HashMap<>();
     }
-
-    // TODO #1: Add a directed edge from 'source' to 'destination' with the given weight.
-
+    // Add a directed edge from 'source' to 'destination' with the given weight.
     public void addEdge(String source, String destination, int weight) {
+        //Jack Chidlaw: if the source node isn't already in the adjacency list create an empty linked list for the source node.
         if (!containsNode(source)) {
             adjacencyList.put(source, new SinglyLinkedList());
         }
+        //Jack Chidlaw: Check if destination nodes are in the adjacency list and add them if they aren't.
+        // For cases where a node appears in a graph file as a destination but never a source.
         if(!containsNode(destination)) {
             adjacencyList.put(destination, new SinglyLinkedList());
         }
+        //Jack Chidlaw: insert the destination node with weight into sources Linked List so
+        //the list remains sorted by weight.
         adjacencyList.get(source).addSorted(destination, weight);
     }
 
@@ -83,7 +91,6 @@ class Graph {
     // This method checks if a given node exists in the graph.
     // It returns true if the node is present in the adjacency list, false otherwise.
     public boolean containsNode(String node) {
-
         // The adjacencyList is a map that stores each node as a key.
         // If the node is present as a key in the map, it means the graph knows about it.
         // We use the built-in containsKey() method to check for the node's presence.
@@ -121,20 +128,24 @@ class Graph {
             distances.put(node, Integer.MAX_VALUE);
         }
 
-
+        //Jack Chidlaw: set the start nodes distance to itself as 0
         distances.put(start, 0);
 
+        // Create a key-value pair (entry) that represents the starting node and its distance.
+        // The key is the node name (e.g., "A" or "1"), and the value is the distance (0).
         Map.Entry<String, Integer> startEntry = new AbstractMap.SimpleEntry<>(start, 0);
 
         // Add this entry to the priority queue.
         // This tells the algorithm to start processing from this node first.
         pq.add(startEntry);
 
+        //Jack Chidlaw: while the priority queue is not empty
         while (!pq.isEmpty()) {
 
             // Remove (poll) the node with the smallest distance from the priority queue.
             // This gives us the next "most promising" node to explore.
             Map.Entry<String, Integer> current = pq.poll();
+
             // Extract the node name (e.g., "A", "B", etc.) from the current entry.
             String currentKey = current.getKey();
 
@@ -142,24 +153,34 @@ class Graph {
             int currentDistance = current.getValue();
 
             if (currentDistance > distances.get(currentKey)) {
-
+                //Jack Chidlaw: Skip the node if we already found a shorter distance.
                 continue;
             }
-                    // Get the list of neighbors (edges) for the current node.
-                    // If the current node has no outgoing edges, we get an empty list instead.
+            // Get the list of neighbors (edges) for the current node.
+            // If the current node has no outgoing edges, we get an empty list instead.
             List<Edge> neighbors = adjacencyList.getOrDefault(currentKey, new SinglyLinkedList()).toList();
 
             // Loop through each edge in the neighbor list using a basic for-loop with index.
             for (int i = 0; i < neighbors.size(); i++) {
 
+                // Get the edge at index i from the list of neighbors.
+                // This edge represents a connection from the current node to a neighbor.
+                // Each edge object contains the neighbor's name (edge.destination) and the cost to reach it (edge.weight).
                 Edge edge = neighbors.get(i);
 
+                //Jack Chidlaw: Calculate the distance from the start to the neighbor node through the current node.
                 int newDist = currentDistance + edge.weight;
 
+                // Get the current known shortest distance to the destination node.
+                // If the destination node is not yet in the distances map, use Integer.MAX_VALUE as the default (infinity).
                 int knownDistance = distances.getOrDefault(edge.destination, Integer.MAX_VALUE);
 
+                //Jack Chidlaw: if the new distance is less than the currently know shortest distance.
                 if (newDist < knownDistance) {
+                    //Jack Chidlaw: update the shortest path to this neighbor
                     distances.put(edge.destination, newDist);
+
+                    //Jack Chidlaw: create a new entry for this neighbor and add it to the priority queue for later processing.
                     Map.Entry<String, Integer> neighbor = new AbstractMap.SimpleEntry<>(edge.destination, newDist);
                     pq.add(neighbor);
                 }
