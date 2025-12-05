@@ -259,7 +259,7 @@ class Graph {
 }
 
 // The Main class contains the entry point of the program.
-public class Main {
+public class PA4 {
 
     // The main method is where the program starts running.
     public static void main(String[] args) {
